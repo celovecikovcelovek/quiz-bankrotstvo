@@ -17,13 +17,8 @@
         .result-screen h2 { font-size: 26px; color: #1e293b; margin-bottom: 15px; }
         .percentage-box { display: inline-block; font-size: 48px; font-weight: 800; color: #ef4444; background: #fef2f2; padding: 15px 30px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #fee2e2; }
         .result-desc { font-size: 16px; color: #64748b; line-height: 1.6; margin-bottom: 30px; }
-        .cta-btn, .submit-btn { display: inline-block; width: 100%; background: #28a745; color: white; border: none; padding: 18px; font-size: 18px; font-weight: bold; border-radius: 12px; cursor: pointer; text-decoration: none; transition: background 0.2s; text-align: center; }
-        .cta-btn:hover, .submit-btn:hover { background: #218838; }
-        .form-group { text-align: left; margin-bottom: 20px; }
-        .form-group label { display: block; font-size: 14px; font-weight: 600; color: #475569; margin-bottom: 8px; }
-        input, select { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 16px; outline: none; background: #f8fafc; }
-        input:focus, select:focus { border-color: #3b82f6; background: #fff; }
-        .form-title { font-size: 22px; font-weight: 700; margin-bottom: 20px; color: #1e293b; text-align: center; }
+        .cta-btn { display: inline-block; width: 100%; background: #28a745; color: white; border: none; padding: 18px; font-size: 18px; font-weight: bold; border-radius: 12px; cursor: pointer; text-decoration: none; transition: background 0.2s; text-align: center; }
+        .cta-btn:hover { background: #218838; }
     </style>
 </head>
 <body>
@@ -64,57 +59,14 @@
         <h2>Ваш уровень соответствия условиям банкротства:</h2>
         <div id="percentage" class="percentage-box">0%</div>
         <p id="description" class="result-desc"></p>
-        <button onclick="showCalendarScreen()" class="cta-btn">Записаться на бесплатную консультацию</button>
-    </div>
-    <div id="booking-block" class="hidden">
-        <div class="form-title">Запись на консультацию</div>
-        <form id="lead-form">
-            <div class="form-group">
-                <label for="booking-time">Выберите удобную дату и время (интервал 1 час):</label>
-                <select id="booking-time" required>
-                    <option value="27 июля в 10:00">27 июля в 10:00</option>
-                    <option value="27 июля в 11:00">27 июля в 11:00</option>
-                    <option value="27 июля в 12:00">27 июля в 12:00</option>
-                    <option value="27 июля в 13:00">27 июля в 13:00</option>
-                    <option value="27 июля в 14:00">27 июля в 14:00</option>
-                    <option value="27 июля в 15:00">27 июля в 15:00</option>
-                    <option value="27 июля в 16:00">27 июля в 16:00</option>
-                    <option value="27 июля в 17:00">27 июля в 17:00</option>
-                    <option value="27 июля в 18:00">27 июля в 18:00</option>
-                    <option value="28 июля в 10:00">28 июля в 10:00</option>
-                    <option value="28 июля в 11:00">28 июля в 11:00</option>
-                    <option value="28 июля в 12:00">28 июля в 12:00</option>
-                    <option value="28 июля в 13:00">28 июля в 13:00</option>
-                    <option value="28 июля в 14:00">28 июля в 14:00</option>
-                    <option value="28 июля в 15:00">28 июля в 15:00</option>
-                    <option value="28 июля в 16:00">28 июля в 16:00</option>
-                    <option value="28 июля в 17:00">28 июля в 17:00</option>
-                    <option value="28 июля в 18:00">28 июля в 18:00</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="user-name">Ваше имя:</label>
-                <input type="text" id="user-name" placeholder="Имя" required>
-            </div>
-            <div class="form-group">
-                <label for="user-phone">Номер телефона:</label>
-                <input type="tel" id="user-phone" placeholder="+7 (999) 123-45-67">
-            </div>
-            <div class="form-group">
-                <label for="user-vk">Ссылка на ваш профиль ВКонтакте:</label>
-                <input type="text" id="user-vk" placeholder="://vk.com...">
-            </div>
-            <button type="submit" class="submit-btn" id="submit-btn-text">Подтвердить запись</button>
-        </form>
+        <button onclick="goToYandexForm()" class="cta-btn">Записаться на бесплатную консультацию</button>
     </div>
 </div>
 <script>
     var totalScore = 0;
-    var answersHistory = [];
     var calculatedPercentage = 0;
 
     function saveAnswer(step, score, text) {
-        answersHistory.push("Вопрос " + step + ": " + text);
         totalScore += score;
         document.getElementById("step-" + step).classList.add("hidden");
 
@@ -138,66 +90,10 @@
         }
     }
 
-    function showCalendarScreen() {
-        document.getElementById("result-block").classList.add("hidden");
-        document.getElementById("booking-block").classList.remove("hidden");
+    function goToYandexForm() {
+        // Подключаем созданную вами Яндекс Форму
+        window.location.href = "https://forms.yandex.ru/u/6a6631fc6d2d73f6be16f89e";
     }
-
-    document.getElementById("lead-form").onsubmit = function(event) {
-        event.preventDefault();
-        
-        var accessKey = "76bd1ef2-7f1e-4939-a7ec-b96e602fea24"; 
-        var clientName = document.getElementById("user-name").value;
-        var clientPhone = document.getElementById("user-phone").value;
-        var clientVk = document.getElementById("user-vk").value;
-        var chosenTime = document.getElementById("booking-time").value;
-        var fromDomain = window.location.hostname
-        
-        if (!clientPhone.trim() && !clientVk.trim()) {
-            alert("Пожалуйста, заполните хотя бы одно поле связи: телефон или ВК.");
-            return false;
-        }
-
-        var btnText = document.getElementById("submit-btn-text");
-        btnText.innerText = "Отправка записи...";
-        btnText.disabled = true;
-
-        var fullReport = "Запись на консультацию:\n" +
-                         "👤 Имя: " + clientName + "\n" +
-                         "📞 Телефон: " + (clientPhone.trim() ? clientPhone : "Не указан") + "\n" +
-                         "🌐 ВК: " + (clientVk.trim() ? clientVk : "Не указан") + "\n" +
-                         "⏰ Время: " + chosenTime + "\n" +
-                         "📊 Результат теста: " + calculatedPercentage + "%\n\n" +
-                         "📝 Ответы:\n" + answersHistory.join("\n");
-
-        var destinationVkUrl = "https://vk.com" + encodeURIComponent(fullReport);
-
-        fetch("https://web3forms.com", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "Accept": "application/json" },
-            body: JSON.stringify({
-                access_key: accessKey,
-                subject: "🔥 Новая запись: " + clientName + " (" + chosenTime + ")",
-                message: fullReport,
-                _from: fromDomain
-            })
-        })
-        .then(function(response) {
-            if (response.ok) {
-                alert("🎉 Вы успешно записаны! Время " + chosenTime + " закреплено за вами. Сейчас вы будете перенаправлены к Маше Златовой.");
-                window.location.href = destinationVkUrl;
-            } else {
-                alert("Ошибка отправки. Пожалуйста, попробуйте еще раз.");
-                btnText.innerText = "Подтвердить запись";
-                btnText.disabled = false;
-            }
-        })
-        .catch(function(error) {
-            alert("Ошибка сети. Попробуйте позже.");
-            btnText.innerText = "Подтвердить запись";
-            btnText.disabled = false;
-        });
-    };
 </script>
 </body>
 </html>
