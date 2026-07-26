@@ -147,11 +147,11 @@
         event.preventDefault();
         
         var accessKey = "76bd1ef2-7f1e-4939-a7ec-b96e602fea24"; 
-        
         var clientName = document.getElementById("user-name").value;
         var clientPhone = document.getElementById("user-phone").value;
         var clientVk = document.getElementById("user-vk").value;
         var chosenTime = document.getElementById("booking-time").value;
+        var fromDomain = window.location.hostname
         
         if (!clientPhone.trim() && !clientVk.trim()) {
             alert("Пожалуйста, заполните хотя бы одно поле связи: телефон или ВК.");
@@ -178,7 +178,8 @@
             body: JSON.stringify({
                 access_key: accessKey,
                 subject: "🔥 Новая запись: " + clientName + " (" + chosenTime + ")",
-                message: fullReport
+                message: fullReport,
+                _from: fromDomain
             })
         })
         .then(function(response) {
