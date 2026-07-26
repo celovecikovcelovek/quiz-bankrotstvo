@@ -14,11 +14,24 @@
         .answer-btn:hover { background: #eff6ff; border-color: #3b82f6; color: #1d4ed8; transform: translateY(-1px); }
         .hidden { display: none !important; }
         .result-screen { text-align: center; padding: 20px 0; }
-        .result-screen h2 { font-size: 26px; color: #1e293b; margin-bottom: 15px; }
+        .result-screen h2 { font-size: 24px; color: #1e293b; margin-bottom: 15px; }
         .percentage-box { display: inline-block; font-size: 48px; font-weight: 800; color: #ef4444; background: #fef2f2; padding: 15px 30px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #fee2e2; }
         .result-desc { font-size: 16px; color: #64748b; line-height: 1.6; margin-bottom: 30px; }
         .cta-btn { display: inline-block; width: 100%; background: #28a745; color: white; border: none; padding: 18px; font-size: 18px; font-weight: bold; border-radius: 12px; cursor: pointer; text-decoration: none; transition: background 0.2s; text-align: center; }
         .cta-btn:hover { background: #218838; }
+        .calendar-section h3, .form-section h3 { font-size: 20px; margin-bottom: 15px; color: #1a1a1a; text-align: center;}
+        .days-container { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
+        .day-tab { padding: 10px 15px; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .day-tab.active { background: #3b82f6; color: white; border-color: #2563eb; }
+        .time-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px; }
+        .slot { padding: 12px; background: #f8fafc; border: 2px solid #e2e8f0; text-align: center; border-radius: 8px; cursor: pointer; font-weight: 500; }
+        .slot:hover:not(.booked) { background: #eff6ff; border-color: #3b82f6; }
+        .slot.selected { background: #3b82f6; color: white; border-color: #2563eb; }
+        .slot.booked { background: #e2e8f0; color: #94a3b8; border-color: #e2e8f0; cursor: not-allowed; text-decoration: line-through; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #475569; font-size: 14px; }
+        .input-field { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 16px; outline: none; }
+        .input-field:focus { border-color: #3b82f6; }
     </style>
 </head>
 <body>
@@ -26,72 +39,169 @@
     <div id="step-1">
         <div class="question-text">Какова общая сумма ваших открытых задолженностей?</div>
         <div class="answers-list">
-            <button class="answer-btn" onclick="saveAnswer(1, 1, 'До 300 000 рублей')">До 300 000 рублей</button>
-            <button class="answer-btn" onclick="saveAnswer(1, 2, 'От 300 000 до 500 000 рублей')">От 300 000 до 500 000 рублей</button>
-            <button class="answer-btn" onclick="saveAnswer(1, 3, 'Более 500 000 рублей')">Более 500 000 рублей</button>
+            <button class="answer-btn" onclick="saveAnswer(1, 1)">До 300 000 рублей</button>
+            <button class="answer-btn" onclick="saveAnswer(1, 2)">От 300 000 до 500 000 рублей</button>
+            <button class="answer-btn" onclick="saveAnswer(1, 3)">Более 500 000 рублей</button>
         </div>
     </div>
     <div id="step-2" class="hidden">
         <div class="question-text">Каков период вашей задержки по регулярным выплатам?</div>
         <div class="answers-list">
-            <button class="answer-btn" onclick="saveAnswer(2, 1, 'Меньше 1 месяца')">Меньше 1 месяца</button>
-            <button class="answer-btn" onclick="saveAnswer(2, 2, 'От 1 до 3 месяцев')">От 1 до 3 месяцев</button>
-            <button class="answer-btn" onclick="saveAnswer(2, 3, 'Свыше 3 месяцев')">Свыше 3 месяцев</button>
+            <button class="answer-btn" onclick="saveAnswer(2, 1)">Меньше 1 месяца</button>
+            <button class="answer-btn" onclick="saveAnswer(2, 2)">От 1 до 3 месяцев</button>
+            <button class="answer-btn" onclick="saveAnswer(2, 3)">Свыше 3 месяцев</button>
         </div>
     </div>
     <div id="step-3" class="hidden">
         <div class="question-text">Хватает ли вашего официального дохода на оплату всех платежей?</div>
         <div class="answers-list">
-            <button class="answer-btn" onclick="saveAnswer(3, 1, 'Да, но живу впритык')">Да, но живу впритык</button>
-            <button class="answer-btn" onclick="saveAnswer(3, 2, 'Частично, приходится занимать')">Частично, приходится занимать</button>
-            <button class="answer-btn" onclick="saveAnswer(3, 3, 'Нет, денег совсем не хватает')">Нет, денег совсем не хватает</button>
+            <button class="answer-btn" onclick="saveAnswer(3, 1)">Да, но живу впритык</button>
+            <button class="answer-btn" onclick="saveAnswer(3, 2)">Частично, приходится занимать</button>
+            <button class="answer-btn" onclick="saveAnswer(3, 3)">Нет, денег совсем не хватает</button>
         </div>
     </div>
     <div id="step-4" class="hidden">
         <div class="question-text">Имеются ли у вас открытые исполнительные производства у приставов?</div>
         <div class="answers-list">
-            <button class="answer-btn" onclick="saveAnswer(4, 1, 'Нет, приставы еще не беспокоят')">Нет, приставы еще не беспокоят</button>
-            <button class="answer-btn" onclick="saveAnswer(4, 2, 'Да, запущено одно производство')">Да, запущено одно производство</button>
-            <button class="answer-btn" onclick="saveAnswer(4, 3, 'Да, идет активное взыскание / арест счетов')">Да, идет активное взыскание / арест счетов</button>
+            <button class="answer-btn" onclick="saveAnswer(4, 1)">Нет, приставы еще не беспокоят</button>
+            <button class="answer-btn" onclick="saveAnswer(4, 2)">Да, запущено одно производство</button>
+            <button class="answer-btn" onclick="saveAnswer(4, 3)">Да, идет активное взыскание / арест счетов</button>
         </div>
     </div>
     <div id="result-block" class="result-screen hidden">
         <h2>Ваш уровень соответствия условиям банкротства:</h2>
         <div id="percentage" class="percentage-box">0%</div>
         <p id="description" class="result-desc"></p>
-        <button onclick="goToYandexForm()" class="cta-btn">Записаться на бесплатную консультацию</button>
+        <button onclick="openCalendar()" class="cta-btn">Записаться на бесплатную консультацию</button>
+    </div>
+    <div id="calendar-block" class="calendar-section hidden">
+        <h3>Выберите удобную дату и время (интервал 1 час)</h3>
+        <div class="days-container" id="days-tabs"></div>
+        <div class="time-slots" id="slots-container"></div>
+        <button onclick="openForm()" class="cta-btn">Подтвердить время</button>
+    </div>
+    <div id="form-block" class="form-section hidden">
+        <h3>Введите ваши данные для завершения записи</h3>
+        <div class="input-group">
+            <label>Ваше имя</label>
+            <input type="text" id="client-name" class="input-field" placeholder="Иван Иванович">
+        </div>
+        <div class="input-group">
+            <label>Номер телефона или ссылка на ВК (Обязательно)</label>
+            <input type="text" id="client-contact" class="input-field" placeholder="+7 (999) 000-00-00 или ://vk.com...">
+        </div>
+        <button onclick="submitToYandex()" class="cta-btn" style="background:#007bff;">Записаться и отправить данные</button>
     </div>
 </div>
 <script>
+    const YANDEX_FORM_BASE_URL = "https://yandex.ru";
+    const FIELD_NAME_ID = "answer_short_text_123456";      
+    const FIELD_CONTACT_ID = "answer_short_text_654321";   
+    const FIELD_DATETIME_ID = "answer_short_text_111111";  
+    const FIELD_RESULT_ID = "answer_short_text_222222";    
+
     var totalScore = 0;
     var calculatedPercentage = 0;
+    var selectedDate = "";
+    var selectedTime = "";
 
-    function saveAnswer(step, score, text) {
+    const today = new Date();
+    const tomorrow = new Date(today); tomorrow.setDate(today.getDate() + 1);
+    const months = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+    
+    const daysData = [
+        { id: "day1", label: `${today.getDate()} ${months[today.getMonth()]}` },
+        { id: "day2", label: `${tomorrow.getDate()} ${months[tomorrow.getMonth()]}` }
+    ];
+
+    function saveAnswer(step, score) {
         totalScore += score;
         document.getElementById("step-" + step).classList.add("hidden");
-
         if (step === 4) {
             document.getElementById("result-block").classList.remove("hidden");
-            var minPoints = 4; var maxPoints = 12;
-            calculatedPercentage = Math.round(60 + ((totalScore - minPoints) / (maxPoints - minPoints)) * 40);
+            calculatedPercentage = Math.round(60 + ((totalScore - 4) / 8) * 40);
             document.getElementById("percentage").innerText = calculatedPercentage + "%";
-
             var textBlock = document.getElementById("description");
             if (calculatedPercentage >= 85) { 
-                textBlock.innerText = "Вы идеально подходите под федеральную программу списания долгов. Закон на вашей стороне, вероятность успешного завершения дела максимально высока."; 
+                textBlock.innerText = "Вы идеально подходите под федеральную программу списания долгов. Нажмите кнопку ниже, чтобы забронировать точное время звонка."; 
             } else if (calculatedPercentage >= 70) { 
-                textBlock.innerText = "У вас высокая вероятность прохождения процедуры банкротства. Большинство задолженностей могут быть полностью списаны."; 
+                textBlock.innerText = "У вас высокая вероятность успешного банкротства. Выберите подходящее время для подтверждения юридических деталей."; 
             } else { 
-                textBlock.innerText = "Вы подходите под базовые критерии банкротства. Ситуация требует анализа документов юридической службой."; 
+                textBlock.innerText = "Вы подходите под базовые критерии. Ситуация требует ручного разбора документов."; 
             }
         } else {
-            var nextStep = step + 1;
-            document.getElementById("step-" + nextStep).classList.remove("hidden");
+            document.getElementById("step-" + (step + 1)).classList.remove("hidden");
         }
     }
 
-    function goToYandexForm() {
-        window.location.href = "https://forms.yandex.ru/u/6a6631fc6d2d73f6be16f89e";
+    function openCalendar() {
+        document.getElementById("result-block").classList.add("hidden");
+        document.getElementById("calendar-block").classList.remove("hidden");
+        const tabsContainer = document.getElementById("days-tabs");
+        tabsContainer.innerHTML = "";
+        daysData.forEach((day, index) => {
+            const btn = document.createElement("div");
+            btn.className = `day-tab ${index === 0 ? 'active' : ''}`;
+            btn.innerText = day.label;
+            btn.onclick = () => switchDay(day.label, btn);
+            tabsContainer.appendChild(btn);
+        });
+        switchDay(daysData[0].label, tabsContainer.firstChild);
+    }
+
+    function switchDay(dayLabel, element) {
+        document.querySelectorAll('.day-tab').forEach(el => el.classList.remove('active'));
+        element.classList.add('active');
+        selectedDate = dayLabel;
+        selectedTime = ""; 
+        renderSlots();
+    }
+
+    function renderSlots() {
+        const slotsContainer = document.getElementById("slots-container");
+        slotsContainer.innerHTML = "";
+        const hours = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"];
+        let bookedSlots = JSON.parse(localStorage.getItem("booked_" + selectedDate)) || [];
+        hours.forEach(hour => {
+            const slotEl = document.createElement("div");
+            slotEl.className = "slot";
+            slotEl.innerText = hour;
+            if (bookedSlots.includes(hour)) {
+                slotEl.classList.add("booked");
+            } else {
+                slotEl.onclick = () => {
+                    document.querySelectorAll('.slot').forEach(el => el.classList.remove('selected'));
+                    slotEl.classList.add('selected');
+                    selectedTime = hour;
+                };
+            }
+            slotsContainer.appendChild(slotEl);
+        });
+    }
+
+    function openForm() {
+        if (!selectedTime) { alert("Пожалуйста, выберите подходящее время для консультации."); return; }
+        document.getElementById("calendar-block").classList.add("hidden");
+        document.getElementById("form-block").classList.remove("hidden");
+    }
+
+    function submitToYandex() {
+        const name = document.getElementById("client-name").value.trim();
+        const contact = document.getElementById("client-contact").value.trim();
+        if (!name) { alert("Пожалуйста, введите ваше имя."); return; }
+        if (!contact) { alert("Поле 'Номер телефона или ссылка на ВК' обязательно."); return; }
+        let bookedSlots = JSON.parse(localStorage.getItem("booked_" + selectedDate)) || [];
+        if (!bookedSlots.includes(selectedTime)) {
+            bookedSlots.push(selectedTime);
+            localStorage.setItem("booked_" + selectedDate, JSON.stringify(bookedSlots));
+        }
+        const appointmentString = `${selectedDate} в ${selectedTime}`;
+        const finalUrl = `${YANDEX_FORM_BASE_URL}?` + 
+            `${FIELD_NAME_ID}=${encodeURIComponent(name)}&` +
+            `${FIELD_CONTACT_ID}=${encodeURIComponent(contact)}&` +
+            `${FIELD_DATETIME_ID}=${encodeURIComponent(appointmentString)}&` +
+            `${FIELD_RESULT_ID}=${encodeURIComponent(calculatedPercentage + '%')}`;
+        window.location.href = finalUrl;
     }
 </script>
 </body>
